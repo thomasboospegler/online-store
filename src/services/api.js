@@ -1,5 +1,5 @@
 export async function getCategories() {
-  // Implemente aqui
+  // Implemente aqui (comentario aleatorio para o commit)
 }
 
 export async function getProductsFromCategoryAndQuery(/* categoryId, query */) {
