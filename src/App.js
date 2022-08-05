@@ -5,6 +5,7 @@ import Home from './pages/Home';
 
 class App extends React.Component {
   render() {
+    // const algo = getProductsFromCategoryAndQuery;
     return (
       <div className="App">
         <BrowserRouter>
