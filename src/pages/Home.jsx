@@ -9,14 +9,11 @@ class Home extends Component {
 
   componentDidMount = async () => {
     const list = await getCategories();
-    // const { categoriesList } = this.state;
-    console.log('list: ', list);
     this.setState({ categoriesList: list });
   }
 
   render() {
     const { categoriesList } = this.state;
-    // console.log('categoriesList: ', categoriesList);
     return (
       <div>
 
