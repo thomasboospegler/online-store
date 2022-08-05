@@ -25,9 +25,15 @@ class Home extends Component {
     });
   }
 
-  handleClick = async () => {
-    const { query } = this.state;
-    const response = await getProductsFromCategoryAndQuery('', query);
+  handleClick = async ({ target }) => {
+    const { name, value } = target;
+    let response;
+    if (name === 'category-button') {
+      response = await getProductsFromCategoryAndQuery(value, '');
+    } else {
+      const { query } = this.state;
+      response = await getProductsFromCategoryAndQuery('', query);
+    }
     this.setState({
       products: response.results,
       click: true,
@@ -69,6 +75,8 @@ class Home extends Component {
               data-testid="category"
               value={ id }
               key={ id }
+              name="category-button"
+              onClick={ this.handleClick }
             >
               {name}
             </button>))}
