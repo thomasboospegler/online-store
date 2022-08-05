@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import Card from '../components/Card';
+import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 
 class Home extends Component {
-  state = {
-    categoriesList: [],
+  constructor() {
+    super();
+    this.state = {
+      query: '',
+      products: [],
+      click: false,
+      categoriesList: [],
+    };
   }
 
   componentDidMount = async () => {
@@ -12,39 +19,71 @@ class Home extends Component {
     this.setState({ categoriesList: list });
   }
 
+  handleChange = ({ target }) => {
+    this.setState({
+      query: target.value,
+    });
+  }
+
+  handleClick = async () => {
+    const { query } = this.state;
+    const response = await getProductsFromCategoryAndQuery('', query);
+    this.setState({
+      products: response.results,
+      click: true,
+    });
+  }
+
   render() {
-    const { categoriesList } = this.state;
+    const { products, click, categoriesList } = this.state;
     return (
       <div>
-
-        <div className="home-categories-container">
-          <div className="home-categories">
-            {/* <ul> */}
-            {categoriesList.map(({ id, name }) => (
-              <button
-                type="button"
-                data-testid="category"
-                value={ id }
-                key={ id }
-              >
-                {name}
-              </button>))}
-            {/* </ul> */}
-          </div>
-        </div>
-
-        <span
-          data-testid="home-initial-message"
-        >
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </span>
-
-        <Link to="/cart">
-          <button data-testid="shopping-cart-button" type="button">
-            Carrinho
+        <header>
+          <span
+            data-testid="home-initial-message"
+          >
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </span>
+          <input
+            onChange={ this.handleChange }
+            type="text"
+            data-testid="query-input"
+          />
+          <button
+            onClick={ this.handleClick }
+            type="button"
+            data-testid="query-button"
+          >
+            Pesquisar
           </button>
-        </Link>
-
+          <Link to="/cart">
+            <button data-testid="shopping-cart-button" type="button">
+              Carrinho
+            </button>
+          </Link>
+        </header>
+        <div className="home-categories">
+          {categoriesList.map(({ id, name }) => (
+            <button
+              type="button"
+              data-testid="category"
+              value={ id }
+              key={ id }
+            >
+              {name}
+            </button>))}
+        </div>
+        {products.length < 2 && click ? <span>Nenhum produto foi encontrado</span>
+          : (
+            <div>
+              {products.map((item) => (<Card
+                key={ item.id }
+                title={ item.title }
+                thumbnail={ item.thumbnail }
+                price={ item.price }
+              />))}
+            </div>
+          )}
       </div>
     );
   }
