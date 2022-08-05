@@ -1,15 +1,18 @@
 import React from 'react';
-/* import logo from './logo.svg'; */
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
-// import { getProductsFromCategoryAndQuery } from './services/Api';
+import Home from './pages/Home';
 
 class App extends React.Component {
   render() {
     // const algo = getProductsFromCategoryAndQuery;
     return (
       <div className="App">
-        <header className="App-header" />
-        <getProductsFromCategoryAndQuery />
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={ Home } />
+          </Switch>
+        </BrowserRouter>
       </div>
     );
   }
