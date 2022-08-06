@@ -84,11 +84,12 @@ class Home extends Component {
         {products.length < 2 && click ? <span>Nenhum produto foi encontrado</span>
           : (
             <div>
-              {products.map((item) => (<Card
-                key={ item.id }
-                title={ item.title }
-                thumbnail={ item.thumbnail }
-                price={ item.price }
+              {products.map((product) => (<Card
+                key={ product.id }
+                title={ product.title }
+                thumbnail={ product.thumbnail }
+                price={ product.price }
+                id={ product.id }
               />))}
             </div>
           )}
