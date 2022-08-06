@@ -1,0 +1,91 @@
+.card-item-container {
+  padding: 10px 30px;
+  /* height: 120px; */
+  display: flex;
+  border: 1px solid #cfd5db;
+  width: 80%;
+}
+ 
+.card-buttons {
+  position: relative;
+  padding-top: 5px;
+}
+
+.card-delete-btn {
+  display: inline-block;
+  Cursor: pointer;
+  width: 18px;
+  height: 17px;
+  /* background-image: url("https://www.flaticon.com/free-icons/x") no-repeat center; */
+}
+
+.card-item {
+  width: 70%;
+}
+
+.card-image {
+  margin-right: 20px;
+}
+
+.card-description {
+  padding-top: 5px;
+  margin-right: 10px;
+}
+ 
+.card-description span {
+  color: #43484d;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  margin-top: 8px;
+}
+ 
+.card-quantity {
+  padding-top: 15px;
+  margin-right: 20px;
+}
+.card-quantity input {
+  -webkit-appearance: none;
+  border: none;
+  text-align: center;
+  width: 32px;
+  font-size: 16px;
+  color: #43484D;
+  font-weight: 300;
+}
+
+.card-price {
+  width: 83px;
+  padding-top: 27px;
+  text-align: center;
+  font-size: 16px;
+  color: #43484D;
+  font-weight: 500;
+}
+ 
+button[class*=btn] {
+  width: 30px;
+  height: 30px;
+  background-color: #e1e8ee;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+.card-minus-btn img {
+  margin-bottom: 3px;
+}
+.card-plus-btn img {
+  margin-top: 2px;
+}
+ 
+button:focus,
+input:focus {
+  outline:0;
+}
+
+.card-price-quantity {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+}

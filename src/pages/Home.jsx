@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
+import { getProductQuantity,
+  addProduct, subtractProduct } from '../services/localStorageApi';
 
 class Home extends Component {
   constructor() {
@@ -11,6 +13,7 @@ class Home extends Component {
       products: [],
       click: false,
       categoriesList: [],
+      // didStorageChange: false,
     };
   }
 
@@ -38,6 +41,34 @@ class Home extends Component {
       products: response.results,
       click: true,
     });
+  }
+
+  handleCardBtn = ({ target }, product) => {
+    const { name } = target;
+    // this.setState({ didStorageChange: true });
+    if (name === 'addButton') {
+      addProduct(product);
+    }
+    if (name === 'subtractButton') {
+      subtractProduct(product);
+    }
+    this.forceUpdate();
+  }
+
+  setProduto = (item, quantity) => {
+    const result = {
+      id: item.id,
+      title: item.title,
+      thumbail: item.thumbnail,
+      price: item.price,
+      quantity };
+    return result;
+  }
+
+  getQuantity = async (item) => {
+    const result = await getProductQuantity(item);
+    console.log('getquantity: ', result);
+    return result;
   }
 
   render() {
@@ -84,12 +115,20 @@ class Home extends Component {
         {products.length < 2 && click ? <span>Nenhum produto foi encontrado</span>
           : (
             <div>
-              {products.map((item) => (<Card
-                key={ item.id }
-                title={ item.title }
-                thumbnail={ item.thumbnail }
-                price={ item.price }
-              />))}
+              {products.map((item) => {
+                const quantity = this.getQuantity(item);
+                console.log('render: ', quantity);
+                return (<Card
+                  key={ item.id }
+                  id={ item.id }
+                  title={ item.title }
+                  thumbnail={ item.thumbnail }
+                  price={ item.price }
+                  quantity={ quantity }
+                  onClick={ (e) => this.handleCardBtn(e, this
+                    .setProduto(item, quantity)) }
+                />);
+              })}
             </div>
           )}
       </div>
