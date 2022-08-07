@@ -41,6 +41,7 @@
 .card-quantity {
   margin-right: 20px;
   padding-top: 15px;
+  position: relative;
 }
 
 .card-quantity input {
@@ -51,6 +52,18 @@
   font-weight: 300;
   text-align: center;
   width: 32px;
+}
+
+.card-cart-amount {
+  background-color: red;
+  border-radius: 5px;
+  display: ;
+  color: white;
+  font-size: 12px;
+  position: absolute;
+  padding: 0 3px;
+  right: 0;
+  top: 7px;
 }
 
 .card-price {

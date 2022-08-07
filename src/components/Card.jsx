@@ -56,6 +56,7 @@ class Card extends Component {
                   </button>
                   <input
                     data-testid="shopping-cart-product-quantity"
+                    className="card-quantity"
                     type="text"
                     name="name"
                     value={ quantity }
@@ -82,6 +83,14 @@ class Card extends Component {
                   >
                     Adicionar ao Carrinho
                   </button>
+                  { quantity > 0
+                  && (
+                    <span
+                      data-testid="shopping-cart-product-quantity"
+                      className="card-cart-amount"
+                    >
+                      { quantity }
+                    </span>)}
                 </div>
               )}
           </div>
