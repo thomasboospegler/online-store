@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
-import { getProductQuantity,
-  addProduct, subtractProduct } from '../services/localStorageApi';
+import { getProductsInCart, saveProductsInCart } from '../services/localStorageApi';
+// import { addProductQuantity,
+//   subtractProductQuantity, getQuantityInCart } from '../services/stateAPI';
 
 class Home extends Component {
   constructor() {
@@ -13,13 +14,24 @@ class Home extends Component {
       products: [],
       click: false,
       categoriesList: [],
-      // didStorageChange: false,
+      cartList: [],
     };
   }
 
   componentDidMount = async () => {
-    const list = await getCategories();
-    this.setState({ categoriesList: list });
+    const categorylist = await getCategories();
+    this.setState({
+      categoriesList: categorylist,
+      // cartList: await getProductsInCart(),
+      cartList: await getProductsInCart(),
+    });
+  }
+
+  componentDidUpdate = async () => {
+    const { cartList } = this.state;
+    if (JSON.stringify(cartList) !== await JSON.stringify(getProductsInCart())) {
+      saveProductsInCart(cartList);
+    }
   }
 
   handleChange = ({ target }) => {
@@ -27,6 +39,40 @@ class Home extends Component {
       query: target.value,
     });
   }
+
+  saveCartInState = (productsLlist) => this
+    .setState({ cartList: productsLlist });
+
+  getCartInState = () => {
+    const { cartList } = this.state;
+    const result = cartList;
+    return result;
+  };
+
+  removeProductFromState = async (product) => {
+    const productsInState = await this.getCartInState();
+    if (productsInState.length > 0) {
+      this.saveCartInState(productsInState.filter((p) => p.id !== product.id));
+    }
+  };
+
+  setItem = async (product) => {
+    if (product) {
+      await this.removeProductFromState(product);
+      const productsInState = await this.getCartInState();
+      this.saveCartInState([...productsInState || {}, product]);
+    }
+  };
+
+  addProductQuantity = (product) => {
+    product.quantity += 1;
+    this.setItem(product/* , 1 */);
+  };
+
+  subtractProductQuantity = (product) => {
+    if (product.quantity > 1) product.quantity -= 1;
+    this.setItem(product/* , MINUS */);
+  };
 
   handleClick = async ({ target }) => {
     const { name, value } = target;
@@ -43,32 +89,33 @@ class Home extends Component {
     });
   }
 
-  handleCardBtn = ({ target }, product) => {
+  handleCardBtn = async ({ target }, product) => {
     const { name } = target;
-    // this.setState({ didStorageChange: true });
+    const { cartList } = this.state;
     if (name === 'addButton') {
-      addProduct(product);
+      // addProduct(product);
+      this.addProductQuantity(product);
     }
-    if (name === 'subtractButton') {
-      subtractProduct(product);
+    if (name === 'minusButton') {
+      this.subtractProductQuantity(product);
     }
-    this.forceUpdate();
+    saveProductsInCart(cartList);
   }
 
   setProduto = (item, quantity) => {
     const result = {
       id: item.id,
       title: item.title,
-      thumbail: item.thumbnail,
+      thumbnail: item.thumbnail,
       price: item.price,
       quantity };
     return result;
   }
 
-  getQuantity = async (item) => {
-    const result = await getProductQuantity(item);
-    console.log('getquantity: ', result);
-    return result;
+  getQuantityInCart = (item) => {
+    const { cartList } = this.state;
+    const result = cartList.filter(({ id }) => id === item.id);
+    return !result[0] ? 0 : result[0].quantity || 0;
   }
 
   render() {
@@ -94,7 +141,11 @@ class Home extends Component {
             Pesquisar
           </button>
           <Link to="/cart">
-            <button data-testid="shopping-cart-button" type="button">
+            <button
+              data-testid="shopping-cart-button"
+              type="button"
+              name="cart"
+            >
               Carrinho
             </button>
           </Link>
@@ -116,8 +167,7 @@ class Home extends Component {
           : (
             <div>
               {products.map((item) => {
-                const quantity = this.getQuantity(item);
-                console.log('render: ', quantity);
+                const quantity = this.getQuantityInCart(item, this.state);
                 return (<Card
                   key={ item.id }
                   id={ item.id }

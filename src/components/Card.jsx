@@ -19,8 +19,12 @@ class Card extends Component {
         </div>
 
         <div className="card-item">
-          <div className="card-description">
-            <span>{title}</span>
+          <div
+            className="card-description"
+          >
+            <span data-testid="shopping-cart-product-name">
+              {title}
+            </span>
           </div>
           <div className="card-price-quantity">
             <span className="card-price">
@@ -37,7 +41,12 @@ class Card extends Component {
                 {/* <img src="minus.svg" alt="" /> */}
                 -
               </button>
-              <input type="text" name="name" value={ quantity } />
+              <input
+                data-testid="shopping-cart-product-quantity"
+                type="text"
+                name="name"
+                value={ quantity }
+              />
               <button
                 data-testid="product-add-to-cart"
                 className="card-plus-btn"
