@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 import { getProductsInCart, saveProductsInCart } from '../services/localStorageApi';
+import '../styles/Home.css';
 // import { addProductQuantity,
 //   subtractProductQuantity, getQuantityInCart } from '../services/stateAPI';
 
@@ -150,37 +151,40 @@ class Home extends Component {
             </button>
           </Link>
         </header>
-        <div className="home-categories">
-          {categoriesList.map(({ id, name }) => (
-            <button
-              type="button"
-              data-testid="category"
-              value={ id }
-              key={ id }
-              name="category-button"
-              onClick={ this.handleClick }
-            >
-              {name}
-            </button>))}
+        <div className="home-category-products-container">
+          <div className="home-categories">
+            {categoriesList.map(({ id, name }) => (
+              <button
+                type="button"
+                data-testid="category"
+                value={ id }
+                key={ id }
+                name="category-button"
+                onClick={ this.handleClick }
+              >
+                {name}
+              </button>))}
+          </div>
+          {products.length < 2 && click ? <span>Nenhum produto foi encontrado</span>
+            : (
+              <div className="home-products">
+                {products.map((item) => {
+                  const quantity = this.getQuantityInCart(item, this.state);
+                  return (<Card
+                    key={ item.id }
+                    id={ item.id }
+                    title={ item.title }
+                    thumbnail={ item.thumbnail }
+                    price={ item.price }
+                    quantity={ quantity }
+                    onClick={ (e) => this.handleCardBtn(e, this
+                      .setProduto(item, quantity)) }
+                  />);
+                })}
+              </div>
+            )}
         </div>
-        {products.length < 2 && click ? <span>Nenhum produto foi encontrado</span>
-          : (
-            <div>
-              {products.map((item) => {
-                const quantity = this.getQuantityInCart(item, this.state);
-                return (<Card
-                  key={ item.id }
-                  id={ item.id }
-                  title={ item.title }
-                  thumbnail={ item.thumbnail }
-                  price={ item.price }
-                  quantity={ quantity }
-                  onClick={ (e) => this.handleCardBtn(e, this
-                    .setProduto(item, quantity)) }
-                />);
-              })}
-            </div>
-          )}
+
       </div>
     );
   }

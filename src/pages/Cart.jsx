@@ -87,6 +87,7 @@ export default class Cart extends Component {
               const quantity = this.getQuantityInCart(item, this.state);
               return (<Card
                 key={ item.id }
+                cart
                 id={ item.id }
                 title={ item.title }
                 thumbnail={ item.thumbnail }

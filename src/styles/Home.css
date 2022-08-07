@@ -1,0 +1,13 @@
+.home-category-products-container {
+  display: flex;
+}
+
+.home-categories {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.home-products {
+  width: 100%;
+}
