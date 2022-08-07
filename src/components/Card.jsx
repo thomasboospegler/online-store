@@ -59,7 +59,7 @@ class Card extends Component {
                     className="card-quantity"
                     type="text"
                     name="name"
-                    value={ quantity }
+                    defaultValue={ quantity }
                   />
                   <button
                     data-testid="product-add-to-cart"
