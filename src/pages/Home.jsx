@@ -174,6 +174,7 @@ class Home extends Component {
                   title={ item.title }
                   thumbnail={ item.thumbnail }
                   price={ item.price }
+                  id={ product.id }
                   quantity={ quantity }
                   onClick={ (e) => this.handleCardBtn(e, this
                     .setProduto(item, quantity)) }

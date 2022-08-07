@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../styles/Card.css';
 
 class Card extends Component {
   render() {
-    const { id, title, price, thumbnail, quantity, onClick } = this.props;
+    const { id, title, price, thumbnail, quantity, onClick, id } = this.props;
     const product = {
       id,
       title,
@@ -31,6 +32,12 @@ class Card extends Component {
               R$
               {price}
             </span>
+            <Link
+              to={ `/details/${id}` }
+              data-testid="product-detail-link"
+            >
+             Mais Detalhes
+           </Link>
             <div className="card-quantity">
               <button
                 className="card-minus-btn"
@@ -75,6 +82,7 @@ Card.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default Card;
