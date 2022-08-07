@@ -53,7 +53,7 @@ class Home extends Component {
   removeProductFromState = async (product) => {
     const productsInState = await this.getCartInState();
     if (productsInState.length > 0) {
-      this.saveCartInState(productsInState.filter((p) => p.id !== product.id));
+      await this.saveCartInState(productsInState.filter((p) => p.id !== product.id));
     }
   };
 
@@ -61,17 +61,19 @@ class Home extends Component {
     if (product) {
       await this.removeProductFromState(product);
       const productsInState = await this.getCartInState();
-      this.saveCartInState([...productsInState || {}, product]);
+      if (product.quantity > 0) {
+        this.saveCartInState([...productsInState || {}, product]);
+      }
     }
   };
 
-  addProductQuantity = (product) => {
-    product.quantity += 1;
+  addProductQuantity = (product, quantity) => {
+    product.quantity += quantity;
     this.setItem(product/* , 1 */);
   };
 
-  subtractProductQuantity = (product) => {
-    if (product.quantity > 1) product.quantity -= 1;
+  subtractProductQuantity = (product, quantity) => {
+    product.quantity -= quantity;
     this.setItem(product/* , MINUS */);
   };
 
@@ -95,11 +97,15 @@ class Home extends Component {
     const { cartList } = this.state;
     if (name === 'addButton') {
       // addProduct(product);
-      this.addProductQuantity(product);
+      this.addProductQuantity(product, 1);
     }
-    if (name === 'minusButton') {
-      this.subtractProductQuantity(product);
+    if ((name === 'minusButton') && (product.quantity > 1)) {
+      this.subtractProductQuantity(product, 1);
     }
+    if (name === 'removeButton') {
+      this.subtractProductQuantity(product, product.quantity);
+    }
+
     saveProductsInCart(cartList);
   }
 

@@ -43,17 +43,19 @@ export default class Cart extends Component {
     if (product) {
       await this.removeProductFromState(product);
       const productsInState = await this.getCartInState();
-      this.saveCartInState([...productsInState || {}, product]);
+      if (product.quantity > 0) {
+        this.saveCartInState([...productsInState || {}, product]);
+      }
     }
   };
 
-  addProductQuantity = (product) => {
-    product.quantity += 1;
+  addProductQuantity = (product, quantity) => {
+    product.quantity += quantity;
     this.setItem(product/* , 1 */);
   };
 
-  subtractProductQuantity = (product) => {
-    if (product.quantity > 1) product.quantity -= 1;
+  subtractProductQuantity = (product, quantity) => {
+    product.quantity -= quantity;
     this.setItem(product/* , MINUS */);
   };
 
@@ -62,10 +64,13 @@ export default class Cart extends Component {
     const { cartList } = this.state;
     if (name === 'addButton') {
       // addProduct(product);
-      this.addProductQuantity(product);
+      this.addProductQuantity(product, 1);
     }
-    if (name === 'minusButton') {
-      this.subtractProductQuantity(product);
+    if ((name === 'minusButton') && (product.quantity > 1)) {
+      this.subtractProductQuantity(product, 1);
+    }
+    if (name === 'removeButton') {
+      this.subtractProductQuantity(product, product.quantity);
     }
     saveProductsInCart(cartList);
   }
@@ -83,19 +88,20 @@ export default class Cart extends Component {
         ? <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>
         : (
           <div>
-            {products.map((item) => {
-              const quantity = this.getQuantityInCart(item, this.state);
-              return (<Card
-                key={ item.id }
-                cart
-                id={ item.id }
-                title={ item.title }
-                thumbnail={ item.thumbnail }
-                price={ item.price }
-                quantity={ quantity }
-                onClick={ (e) => this.handleCardBtn(e, item) }
-              />);
-            })}
+            {products.filter(({ quantity }) => quantity > 0)
+              .map((item) => {
+                const quantity = this.getQuantityInCart(item, this.state);
+                return (<Card
+                  key={ item.id }
+                  cart
+                  id={ item.id }
+                  title={ item.title }
+                  thumbnail={ item.thumbnail }
+                  price={ item.price }
+                  quantity={ quantity }
+                  onClick={ (e) => this.handleCardBtn(e, item) }
+                />);
+              })}
           </div>
         )
 

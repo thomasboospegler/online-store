@@ -96,7 +96,14 @@ class Card extends Component {
           </div>
         </div>
         <div className="card-buttons">
-          <span className="card-delete-btn">❌</span>
+          <button
+            className="card-delete-btn"
+            type="button"
+            name="removeButton"
+            onClick={ (e) => onClick(e, product) }
+          >
+            ❌
+          </button>
         </div>
       </section>
     );
