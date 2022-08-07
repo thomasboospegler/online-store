@@ -5,7 +5,7 @@ import '../styles/Card.css';
 
 class Card extends Component {
   render() {
-    const { id, title, price, thumbnail, quantity, onClick, id } = this.props;
+    const { id, title, price, thumbnail, quantity, onClick } = this.props;
     const product = {
       id,
       title,
@@ -36,8 +36,8 @@ class Card extends Component {
               to={ `/details/${id}` }
               data-testid="product-detail-link"
             >
-             Mais Detalhes
-           </Link>
+              Mais Detalhes
+            </Link>
             <div className="card-quantity">
               <button
                 className="card-minus-btn"
