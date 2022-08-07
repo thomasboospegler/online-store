@@ -1,5 +1,11 @@
+.home-header {
+  position: fixed;
+  top: 0;
+}
+
 .home-category-products-container {
   display: flex;
+  margin-top: 30px;
 }
 
 .home-categories {
@@ -10,4 +16,16 @@
 
 .home-products {
   width: 100%;
+}
+
+.home-category-btn {
+  border: none;
+  padding: 5px 0;
+}
+
+.home-category-btn:hover {
+  font-size: 12px;
+  background-color: #fff;
+  border-bottom: 1px solid rgb(208, 199, 199);
+  border-top: 1px solid rgb(208, 199, 199);
 }

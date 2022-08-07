@@ -129,7 +129,7 @@ class Home extends Component {
     const { products, click, categoriesList } = this.state;
     return (
       <div>
-        <header>
+        <header className="home-header">
           <span
             data-testid="home-initial-message"
           >
@@ -163,6 +163,7 @@ class Home extends Component {
               <button
                 type="button"
                 data-testid="category"
+                className="home-category-btn"
                 value={ id }
                 key={ id }
                 name="category-button"
