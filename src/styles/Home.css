@@ -24,8 +24,8 @@
 }
 
 .home-category-btn:hover {
-  font-size: 12px;
-  background-color: #fff;
+  background-color: white;
   border-bottom: 1px solid rgb(208, 199, 199);
   border-top: 1px solid rgb(208, 199, 199);
+  font-size: 12px;
 }
