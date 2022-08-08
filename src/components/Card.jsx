@@ -42,10 +42,11 @@ class Card extends Component {
               ? (
                 <div className="card-quantity">
                   <button
+                    data-testid="product-decrease-quantity"
                     className="card-minus-btn"
                     type="button"
                     name="minusButton"
-                    onClick={ onClick }
+                    onClick={ (e) => onClick(e, product) }
                   >
                     {/* <img src="minus.svg" alt="" /> */}
                     ➖
@@ -58,7 +59,7 @@ class Card extends Component {
                     { quantity }
                   </span>
                   <button
-                    data-testid="product-add-to-cart"
+                    data-testid="product-increase-quantity"
                     className="card-plus-btn"
                     type="button"
                     name="addButton"
@@ -94,6 +95,7 @@ class Card extends Component {
         <div className="card-buttons">
           <button
             className="card-delete-btn"
+            data-testid="remove-product"
             type="button"
             name="removeButton"
             onClick={ (e) => onClick(e, product) }
