@@ -46,3 +46,12 @@ export const getProductQuantity = (product) => {
     return typeof (productInCart.quantity) !== 'number' ? 0 : productInCart.quantity;
   } return 0;
 };
+
+export const saveComments = (id, comment) => localStorage
+  .setItem(`comments_${id}`, JSON.stringify(comment));
+
+export const getComments = (id) => {
+  const result = JSON
+    .parse(localStorage.getItem(`comments_${id}`));
+  return result;
+};

@@ -8,6 +8,8 @@ class Details extends Component {
   state = {
     productDetails: [],
     quantity: 0,
+    evaluation: '',
+    email: '',
   };
 
   componentDidMount() {
@@ -49,8 +51,13 @@ class Details extends Component {
     saveProductsInCart([...cartList, productDetails]);
   }
 
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  }
+
   render() {
-    const { productDetails, quantity } = this.state;
+    const { productDetails, quantity, evaluation, email } = this.state;
     return (
       <section>
         <Link to="/cart">
@@ -88,6 +95,82 @@ class Details extends Component {
               { quantity }
             </span>)}
         </div>
+        <form className="comments-container">
+          <input
+            type="text"
+            name="email"
+            value={ email }
+            data-testid="product-detail-email"
+            required
+          />
+          <label htmlFor="1-rating">
+            <input
+              name="rating"
+              value="1"
+              type="radio"
+              data-testid="1-rating"
+              id="1-rating"
+            />
+            1
+          </label>
+          <label htmlFor="2-rating">
+            <input
+              name="rating"
+              value="2"
+              type="radio"
+              data-testid="2-rating"
+              id="2-rating"
+            />
+            2
+          </label>
+          <label htmlFor="3-rating">
+            <input
+              name="rating"
+              value="3"
+              type="radio"
+              data-testid="3-rating"
+              id="3-rating"
+            />
+            3
+          </label>
+          <label htmlFor="4-rating">
+            <input
+              name="rating"
+              value="4"
+              type="radio"
+              data-testid="4-rating"
+              id="4-rating"
+            />
+            4
+          </label>
+          <label htmlFor="5-rating">
+            <input
+              name="rating"
+              value="5"
+              type="radio"
+              data-testid="5-rating"
+              id="5-rating"
+            />
+            5
+          </label>
+          <textarea
+            name="evaluation"
+            id="product-detail-evaluation"
+            cols="30"
+            rows="10"
+            data-testid="product-detail-evaluation"
+            value={ evaluation }
+            onChange={ this.handleChange }
+            required
+          />
+          <button
+            type="submit"
+            data-testid="submit-review-btn"
+            onClick={ this.handleSubmitBtn }
+          >
+            Enviar
+          </button>
+        </form>
       </section>
     );
   }
