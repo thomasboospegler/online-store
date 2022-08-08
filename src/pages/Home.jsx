@@ -4,8 +4,6 @@ import Card from '../components/Card';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 import { getProductsInCart, saveProductsInCart } from '../services/localStorageApi';
 import '../styles/Home.css';
-// import { addProductQuantity,
-//   subtractProductQuantity, getQuantityInCart } from '../services/stateAPI';
 
 class Home extends Component {
   constructor() {
@@ -23,7 +21,7 @@ class Home extends Component {
     const categorylist = await getCategories();
     this.setState({
       categoriesList: categorylist,
-      cartList: getProductsInCart(),
+      cartList: getProductsInCart() || [],
     });
   }
 
@@ -107,7 +105,6 @@ class Home extends Component {
     const { cartList } = this.state;
     saveProductsInCart(cartList);
     if (name === 'addButton') {
-      // addProduct(product);
       this.addProductQuantity(product, 1);
     }
     if ((name === 'minusButton') && (product.quantity > 1)) {
@@ -130,8 +127,8 @@ class Home extends Component {
 
   getQuantityInCart = (item) => {
     const { cartList } = this.state;
-    const result = cartList.filter(({ id }) => id === item.id);
-    return !result[0] ? 0 : result[0].quantity || 0;
+    const result = cartList.length > 0 ? cartList.filter(({ id }) => id === item.id) : [];
+    return !result[0] ? 0 : result[0].quantity;
   }
 
   render() {
