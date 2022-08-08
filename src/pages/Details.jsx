@@ -2,27 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductId } from '../services/api';
+import { getProductsInCart, saveProductsInCart } from '../services/localStorageApi';
 
 class Details extends Component {
-  constructor() {
-    super();
-    this.state = {
-      productDetails: {},
-    };
-  }
+  state = {
+    productDetails: {},
+  };
 
   componentDidMount() {
     this.fetchId();
   }
 
   fetchId = async () => {
-    const {
-      match: {
-        params: { id },
-      },
-    } = this.props;
-    const response = await getProductId(id);
-    this.setState({ productDetails: response });
+    const { match: { params: { id: productId } } } = this.props;
+    const response = await getProductId(productId);
+    const { id, price, quantity = 1, thumbnail, title } = response;
+    const result = { id, price, quantity, thumbnail, title };
+    this.setState({ productDetails: result });
+  }
+
+  handleBtnChange = () => {
+    const { productDetails } = this.state;
+    const cartList = getProductsInCart();
+    saveProductsInCart([...cartList, productDetails]);
   }
 
   render() {
@@ -47,6 +49,13 @@ class Details extends Component {
           <li>{`Quantidade: ${productDetails.available_quantity}`}</li>
           <li>Outras Especificações...</li>
         </ul>
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          onClick={ this.handleBtnChange }
+        >
+          Adicionar ao carrinho
+        </button>
       </section>
     );
   }
