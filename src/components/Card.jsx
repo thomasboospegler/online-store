@@ -21,15 +21,11 @@ class Card extends Component {
 
         <div className="card-item">
           <div className="card-description">
-            {cart
-              ? (
-                <p data-testid="shopping-cart-product-name">
-                  {title}
-                </p>)
-              : (
-                <p>
-                  {title}
-                </p>)}
+
+            <p data-testid="shopping-cart-product-name">
+              {title}
+            </p>
+
           </div>
           <div className="card-price-quantity">
             <span className="card-price">
@@ -59,7 +55,7 @@ class Card extends Component {
                     className="card-quantity"
                     type="text"
                     name="name"
-                    defaultValue={ quantity }
+                    value={ quantity }
                   />
                   <button
                     data-testid="product-add-to-cart"
@@ -112,12 +108,16 @@ class Card extends Component {
 
 Card.propTypes = {
   id: PropTypes.string.isRequired,
-  cart: PropTypes.bool.isRequired,
+  cart: PropTypes.bool,
   title: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   thumbnail: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
+};
+
+Card.defaultProps = {
+  cart: false,
 };
 
 export default Card;

@@ -4,7 +4,7 @@ import { getProductsInCart, saveProductsInCart } from '../services/localStorageA
 
 export default class Cart extends Component {
   state = {
-    products: [],
+    // products: [],
     cartList: [],
   };
 
@@ -15,12 +15,16 @@ export default class Cart extends Component {
     }
   }
 
-  componentDidMount = async () => {
+  teste = async () => {
     const productList = await getProductsInCart();
     this.setState({
       cartList: productList,
-      products: productList,
+      // products: productList,
     });
+  }
+
+  componentDidMount = () => {
+    this.teste();
   }
 
   saveCartInState = (productsLlist) => this
@@ -82,13 +86,14 @@ export default class Cart extends Component {
   }
 
   render() {
-    const { products } = this.state;
+    const { cartList } = this.state;
+    console.log('carList', cartList);
     return (
-      products.length === 0
+      cartList.length === 0
         ? <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>
         : (
           <div>
-            {products.filter(({ quantity }) => quantity > 0)
+            {cartList.filter(({ quantity }) => quantity > 0)
               .map((item) => {
                 const quantity = this.getQuantityInCart(item, this.state);
                 return (<Card
