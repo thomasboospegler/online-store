@@ -51,13 +51,19 @@ class Details extends Component {
 
   render() {
     const { productDetails, quantity } = this.state;
+    const value = getProductsInCart().reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <section>
         <Link to="/cart">
           <button data-testid="shopping-cart-button" type="button">
-            Carrinho
+            <img
+              className="button-cart"
+              src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png"
+              alt="carrinho de compras"
+            />
           </button>
         </Link>
+        {value === 0 ? null : <span data-testid="shopping-cart-size">{value}</span>}
         <h3 data-testid="product-detail-name">{productDetails.title}</h3>
         <p data-testid="product-detail-price">{`R$ ${productDetails.price}`}</p>
         <img
