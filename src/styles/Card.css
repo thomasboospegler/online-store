@@ -42,8 +42,8 @@
 }
 
 .card-quantity {
-  display: flex;
   align-items: center;
+  display: flex;
   margin-right: 20px;
   padding-top: 15px;
   position: relative;
@@ -79,9 +79,9 @@
   border-radius: 5px;
   color: white;
   font-size: 12px;
+  left: 0;
   padding: 0 3px;
   position: absolute;
-  left: 0;
   top: 5px;
 }
 
@@ -90,10 +90,10 @@
   border-radius: 5px;
   color: white;
   font-size: 12px;
+  left: 10px;
   padding: 0 3px;
   position: absolute;
-  left: 10px;
-  top: 0px;
+  top: 0;
 }
 
 .card-price {
