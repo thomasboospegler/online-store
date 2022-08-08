@@ -203,6 +203,7 @@ class Home extends Component {
                     title={ item.title }
                     thumbnail={ item.thumbnail }
                     price={ item.price }
+                    shipping={ item.shipping.free_shipping }
                     quantity={ quantity }
                     onClick={ this.handleCardBtn }
                   />);
