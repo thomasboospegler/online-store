@@ -107,7 +107,6 @@ class Home extends Component {
     const { cartList } = this.state;
     saveProductsInCart(cartList);
     if (name === 'addButton') {
-      // addProduct(product);
       this.addProductQuantity(product, 1, avaliable);
     }
     if ((name === 'minusButton') && (product.quantity > 1)) {
