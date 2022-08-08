@@ -32,8 +32,6 @@ export default class Cart extends Component {
 
   removeProductFromArray = (product) => {
     const productsInState = this.getCartInState();
-    console.log(productsInState);
-
     if (productsInState.length > 0) {
       return (productsInState.filter((p) => p.id !== product.id));
     }
@@ -80,7 +78,6 @@ export default class Cart extends Component {
     if (name === 'removeButton') {
       this.subtractProductQuantity(product, product.quantity);
     }
-    console.log(cartList);
     saveProductsInCart(cartList);
   }
 

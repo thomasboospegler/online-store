@@ -2,31 +2,55 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductId } from '../services/api';
+import { getProductsInCart, saveProductsInCart } from '../services/localStorageApi';
 
 class Details extends Component {
-  constructor() {
-    super();
-    this.state = {
-      productDetails: {},
-    };
-  }
+  state = {
+    productDetails: [],
+    quantity: 0,
+  };
 
   componentDidMount() {
-    this.fetchId();
+    const { match: { params: { id: productId } } } = this.props;
+    const cartList = getProductsInCart();
+    const product = cartList.filter((item) => item.id === productId);
+    this.fetchId(productId);
+    if (product.length > 0) {
+      this.setState({
+        quantity: product[0].quantity,
+      });
+    }
   }
 
-  fetchId = async () => {
-    const {
-      match: {
-        params: { id },
-      },
-    } = this.props;
-    const response = await getProductId(id);
-    this.setState({ productDetails: response });
+  fetchId = async (productId) => {
+    const response = await getProductId(productId);
+    const { id, price, thumbnail, title } = response;
+    const cartList = getProductsInCart();
+    const product = cartList.filter((item) => item.id === productId);
+    const result = { id,
+      price,
+      quantity: product.length > 0 ? product[0].quantity : 0,
+      thumbnail,
+      title,
+      available_quantity: response.available_quantity };
+    this.setState({
+      productDetails: result,
+    });
+  }
+
+  handleBtnChange = () => {
+    let cartList = getProductsInCart();
+    const { productDetails } = this.state;
+    productDetails.quantity += 1;
+    this.setState({
+      quantity: productDetails.quantity,
+    });
+    cartList = cartList.filter((item) => item.id !== productDetails.id);
+    saveProductsInCart([...cartList, productDetails]);
   }
 
   render() {
-    const { productDetails } = this.state;
+    const { productDetails, quantity } = this.state;
     return (
       <section>
         <Link to="/cart">
@@ -47,6 +71,23 @@ class Details extends Component {
           <li>{`Quantidade: ${productDetails.available_quantity}`}</li>
           <li>Outras Especificações...</li>
         </ul>
+        <div className="card-quantity">
+          <button
+            data-testid="product-detail-add-to-cart"
+            type="button"
+            className="card-cart-btn"
+            onClick={ this.handleBtnChange }
+          >
+            Adicionar ao carrinho
+          </button>
+          { quantity > 0
+          && (
+            <span
+              className="card-cart-amount"
+            >
+              { quantity }
+            </span>)}
+        </div>
       </section>
     );
   }
