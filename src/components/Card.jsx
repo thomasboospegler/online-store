@@ -5,7 +5,6 @@ import '../styles/Card.css';
 
 class Card extends Component {
   render() {
-
     const { id, title, price, thumbnail,
       quantity, onClick, cart = false, avaliableQuantity, shipping } = this.props;
 
