@@ -24,18 +24,21 @@ class Details extends Component {
 
   fetchId = async (productId) => {
     const response = await getProductId(productId);
-    const { id, price, thumbnail, title } = response;
+    const { id, price, thumbnail, title, shipping } = response;
     const cartList = getProductsInCart();
     const product = cartList.filter((item) => item.id === productId);
+    const shippings = shipping.free_shipping;
     const result = { id,
       price,
       quantity: product.length > 0 ? product[0].quantity : 0,
       thumbnail,
+      shippings,
       title,
       available_quantity: response.available_quantity };
     this.setState({
       productDetails: result,
     });
+    console.log(result);
   }
 
   handleBtnChange = () => {
@@ -65,6 +68,7 @@ class Details extends Component {
           src={ productDetails.thumbnail }
           alt={ productDetails.price }
         />
+        {productDetails.shippings ? <p data-testid="free-shipping">Frete Gratis</p> : ''}
         <h4>Especificações Técnicas</h4>
         <ul>
           <li>{productDetails.warranty}</li>
