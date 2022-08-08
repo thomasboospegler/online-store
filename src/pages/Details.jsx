@@ -24,18 +24,21 @@ class Details extends Component {
 
   fetchId = async (productId) => {
     const response = await getProductId(productId);
-    const { id, price, thumbnail, title } = response;
+    const { id, price, thumbnail, title, shipping } = response;
     const cartList = getProductsInCart();
     const product = cartList.filter((item) => item.id === productId);
+    const shippings = shipping.free_shipping;
     const result = { id,
       price,
       quantity: product.length > 0 ? product[0].quantity : 0,
       thumbnail,
+      shippings,
       title,
       avaliableQuantity: response.available_quantity };
     this.setState({
       productDetails: result,
     });
+    console.log(result);
   }
 
   handleBtnChange = () => {
@@ -53,13 +56,19 @@ class Details extends Component {
 
   render() {
     const { productDetails, quantity } = this.state;
+    const value = getProductsInCart().reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <section>
         <Link to="/cart">
           <button data-testid="shopping-cart-button" type="button">
-            Carrinho
+            <img
+              className="button-cart"
+              src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png"
+              alt="carrinho de compras"
+            />
           </button>
         </Link>
+        {value === 0 ? null : <span data-testid="shopping-cart-size">{value}</span>}
         <h3 data-testid="product-detail-name">{productDetails.title}</h3>
         <p data-testid="product-detail-price">{`R$ ${productDetails.price}`}</p>
         <img
@@ -67,6 +76,7 @@ class Details extends Component {
           src={ productDetails.thumbnail }
           alt={ productDetails.price }
         />
+        {productDetails.shippings ? <p data-testid="free-shipping">Frete Gratis</p> : ''}
         <h4>Especificações Técnicas</h4>
         <ul>
           <li>{productDetails.warranty}</li>

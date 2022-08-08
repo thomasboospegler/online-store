@@ -5,8 +5,10 @@ import '../styles/Card.css';
 
 class Card extends Component {
   render() {
+
     const { id, title, price, thumbnail,
-      quantity, onClick, cart = false, avaliableQuantity } = this.props;
+      quantity, onClick, cart = false, avaliableQuantity, shipping } = this.props;
+
     const product = {
       id,
       title,
@@ -19,6 +21,7 @@ class Card extends Component {
       <section data-testid="product" className="card-item-container">
         <div className="card-image">
           <img src={ thumbnail } alt={ title } />
+          {shipping ? <p data-testid="free-shipping">Frete Gratis</p> : ''}
         </div>
 
         <div className="card-item">
@@ -131,6 +134,7 @@ Card.propTypes = {
   quantity: PropTypes.number.isRequired,
   avaliableQuantity: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
+  shipping: PropTypes.bool.isRequired,
 };
 
 Card.defaultProps = {
