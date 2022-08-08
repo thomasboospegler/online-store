@@ -1,0 +1,115 @@
+.card-item-container {
+  border: 1px solid #cfd5db;
+  display: flex;
+  padding: 10px 30px;
+  width: 100%;
+}
+
+.card-buttons {
+  padding-top: 5px;
+  position: relative;
+}
+
+.card-delete-btn {
+  background-color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+
+}
+
+.card-item {
+  width: 70%;
+}
+
+.card-image {
+  margin-right: 20px;
+}
+
+.card-description {
+  margin-right: 10px;
+  padding-top: 5px;
+}
+
+.card-description p {
+  color: #43484d;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  margin-top: 8px;
+}
+
+.card-quantity {
+  margin-right: 20px;
+  padding-top: 15px;
+  position: relative;
+}
+
+.card-quantity input {
+  appearance: none;
+  border: none;
+  color: #43484d;
+  font-size: 16px;
+  font-weight: 300;
+  margin-right: 0;
+  text-align: center;
+  width: 50px;
+}
+
+.card-cart-amount {
+  background-color: red;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+  padding: 0 3px;
+  position: absolute;
+  right: 0;
+  top: 7px;
+}
+
+.card-price {
+  color: #43484d;
+  font-size: 16px;
+  font-weight: 500;
+  padding-top: 27px;
+  text-align: center;
+  width: 83px;
+}
+
+.card-minus-btn, .card-plus-btn {
+  background-color: #e1e8ee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+}
+
+.card-cart-btn {
+  background-color: #e1e8ee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.card-minus-btn img {
+  margin-bottom: 3px;
+}
+
+.card-plus-btn img {
+  margin-top: 2px;
+}
+
+button:focus, input:focus {
+  outline: 0;
+}
+
+.card-price-quantity {
+  align-items: flex-end;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
