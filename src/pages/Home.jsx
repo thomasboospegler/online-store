@@ -4,8 +4,6 @@ import Card from '../components/Card';
 import { getProductsFromCategoryAndQuery, getCategories } from '../services/api';
 import { getProductsInCart, saveProductsInCart } from '../services/localStorageApi';
 import '../styles/Home.css';
-// import { addProductQuantity,
-//   subtractProductQuantity, getQuantityInCart } from '../services/stateAPI';
 
 class Home extends Component {
   constructor() {
@@ -107,7 +105,6 @@ class Home extends Component {
     const { cartList } = this.state;
     saveProductsInCart(cartList);
     if (name === 'addButton') {
-      // addProduct(product);
       this.addProductQuantity(product, 1);
     }
     if ((name === 'minusButton') && (product.quantity > 1)) {
@@ -135,7 +132,8 @@ class Home extends Component {
   }
 
   render() {
-    const { products, click, categoriesList } = this.state;
+    const { products, click, categoriesList, cartList } = this.state;
+    const value = cartList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <div>
         <header className="home-header">
@@ -158,13 +156,26 @@ class Home extends Component {
           </button>
           <Link to="/cart">
             <button
+              className="home-cart-button"
               data-testid="shopping-cart-button"
               type="button"
               name="cart"
             >
-              Carrinho
+              <img
+                className="button-cart"
+                src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png"
+                alt="carrinho de compras"
+              />
             </button>
           </Link>
+          {value === 0 ? null
+            : (
+              <span
+                className="cart-button"
+                data-testid="shopping-cart-size"
+              >
+                {value}
+              </span>)}
         </header>
         <div className="home-category-products-container">
           <div className="home-categories">
