@@ -34,7 +34,7 @@ class Details extends Component {
       thumbnail,
       shippings,
       title,
-      available_quantity: response.available_quantity };
+      avaliableQuantity: response.available_quantity };
     this.setState({
       productDetails: result,
     });
@@ -44,12 +44,14 @@ class Details extends Component {
   handleBtnChange = () => {
     let cartList = getProductsInCart();
     const { productDetails } = this.state;
-    productDetails.quantity += 1;
-    this.setState({
-      quantity: productDetails.quantity,
-    });
-    cartList = cartList.filter((item) => item.id !== productDetails.id);
-    saveProductsInCart([...cartList, productDetails]);
+    if (productDetails.quantity < productDetails.avaliableQuantity) {
+      productDetails.quantity += 1;
+      this.setState({
+        quantity: productDetails.quantity,
+      });
+      cartList = cartList.filter((item) => item.id !== productDetails.id);
+      saveProductsInCart([...cartList, productDetails]);
+    }
   }
 
   render() {
@@ -78,7 +80,7 @@ class Details extends Component {
         <h4>Especificações Técnicas</h4>
         <ul>
           <li>{productDetails.warranty}</li>
-          <li>{`Quantidade: ${productDetails.available_quantity}`}</li>
+          <li>{`Quantidade: ${productDetails.avaliableQuantity}`}</li>
           <li>Outras Especificações...</li>
         </ul>
         <div className="card-quantity">

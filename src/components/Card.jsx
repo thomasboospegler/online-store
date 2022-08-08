@@ -5,14 +5,16 @@ import '../styles/Card.css';
 
 class Card extends Component {
   render() {
-    const { id, title, price, thumbnail, quantity, onClick, cart = false } = this.props;
-    const { shipping } = this.props;
+    const { id, title, price, thumbnail,
+      quantity, onClick, cart = false, avaliableQuantity, shipping } = this.props;
+
     const product = {
       id,
       title,
       price,
       thumbnail,
       quantity,
+      avaliableQuantity,
     };
     return (
       <section data-testid="product" className="card-item-container">
@@ -53,23 +55,30 @@ class Card extends Component {
                     {/* <img src="minus.svg" alt="" /> */}
                     ➖
                   </button>
-                  <span
-                    data-testid="shopping-cart-product-quantity"
-                    className="card-quantity"
-                    name="name"
-                  >
-                    { quantity }
-                  </span>
+                  <div className="card-quantity-span">
+                    <span
+                      data-testid="shopping-cart-product-quantity"
+                      className="card-quantity-span"
+                      name="name"
+                    >
+                      { quantity }
+                    </span>
+                  </div>
                   <button
                     data-testid="product-increase-quantity"
                     className="card-plus-btn"
                     type="button"
                     name="addButton"
-                    onClick={ (e) => onClick(e, product) }
+                    onClick={ (e) => onClick(e, product, avaliableQuantity) }
                   >
                     {/* <img src="plus.svg" alt="" /> */}
                     ➕
                   </button>
+                  <span
+                    className="card-quantity-avaliable-quantity"
+                  >
+                    {`Em estoque:${avaliableQuantity}`}
+                  </span>
                 </div>)
               : (
                 <div className="card-quantity">
@@ -78,10 +87,15 @@ class Card extends Component {
                     className="card-cart-btn"
                     type="button"
                     name="addButton"
-                    onClick={ (e) => onClick(e, product) }
+                    onClick={ (e) => onClick(e, product, avaliableQuantity) }
                   >
                     Adicionar ao Carrinho
                   </button>
+                  <span
+                    className="card-cart-avaliable-quantity"
+                  >
+                    {`Em estoque:${avaliableQuantity}`}
+                  </span>
                   { quantity > 0
                   && (
                     <span
@@ -117,6 +131,7 @@ Card.propTypes = {
   price: PropTypes.number.isRequired,
   thumbnail: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
+  avaliableQuantity: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
   shipping: PropTypes.bool.isRequired,
 };

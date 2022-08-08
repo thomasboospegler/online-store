@@ -49,8 +49,6 @@ class Home extends Component {
 
   removeProductFromArray = (product) => {
     const productsInState = this.getCartInState();
-    console.log(productsInState);
-
     if (productsInState.length > 0) {
       return (productsInState.filter((p) => p.id !== product.id));
     }
@@ -75,9 +73,11 @@ class Home extends Component {
     }
   };
 
-  addProductQuantity = (product, quantity) => {
-    product.quantity += quantity;
-    this.setItem(product/* , 1 */);
+  addProductQuantity = (product, quantity, avaliable) => {
+    if (product.quantity < avaliable) {
+      product.quantity += quantity;
+      this.setItem(product/* , 1 */);
+    }
   };
 
   subtractProductQuantity = (product, quantity) => {
@@ -100,12 +100,12 @@ class Home extends Component {
     });
   }
 
-  handleCardBtn = ({ target }, product) => {
+  handleCardBtn = ({ target }, product, avaliable) => {
     const { name } = target;
     const { cartList } = this.state;
     saveProductsInCart(cartList);
     if (name === 'addButton') {
-      this.addProductQuantity(product, 1);
+      this.addProductQuantity(product, 1, avaliable);
     }
     if ((name === 'minusButton') && (product.quantity > 1)) {
       this.subtractProductQuantity(product, 1);
@@ -113,16 +113,6 @@ class Home extends Component {
     if (name === 'removeButton') {
       this.subtractProductQuantity(product, product.quantity);
     }
-  }
-
-  setProduto = (item, quantity) => {
-    const result = {
-      id: item.id,
-      title: item.title,
-      thumbnail: item.thumbnail,
-      price: item.price,
-      quantity };
-    return result;
   }
 
   getQuantityInCart = (item) => {
@@ -205,6 +195,7 @@ class Home extends Component {
                     price={ item.price }
                     shipping={ item.shipping.free_shipping }
                     quantity={ quantity }
+                    avaliableQuantity={ item.available_quantity }
                     onClick={ this.handleCardBtn }
                   />);
                 })}
