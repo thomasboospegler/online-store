@@ -42,20 +42,25 @@
 }
 
 .card-quantity {
+  display: flex;
+  align-items: center;
   margin-right: 20px;
   padding-top: 15px;
   position: relative;
 }
 
-.card-quantity input {
+.card-quantity-span {
   appearance: none;
   border: none;
   color: #43484d;
   font-size: 16px;
   font-weight: 300;
-  margin-right: 0;
   text-align: center;
   width: 50px;
+}
+
+.card-quantity-span span {
+  top: 10px;
 }
 
 .card-cart-amount {
@@ -67,6 +72,28 @@
   position: absolute;
   right: 0;
   top: 7px;
+}
+
+.card-cart-avaliable-quantity {
+  background-color: green;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+  padding: 0 3px;
+  position: absolute;
+  left: 0;
+  top: 5px;
+}
+
+.card-quantity-avaliable-quantity {
+  background-color: green;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+  padding: 0 3px;
+  position: absolute;
+  left: 10px;
+  top: 0px;
 }
 
 .card-price {
