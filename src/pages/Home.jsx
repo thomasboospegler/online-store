@@ -49,6 +49,16 @@ class Home extends Component {
     return result;
   };
 
+  removeProductFromArray = (product) => {
+    const productsInState = this.getCartInState();
+    console.log(productsInState);
+
+    if (productsInState.length > 0) {
+      return (productsInState.filter((p) => p.id !== product.id));
+    }
+    return [];
+  };
+
   removeProductFromState = (product) => {
     const productsInState = this.getCartInState();
     if (productsInState.length > 0) {
@@ -58,10 +68,11 @@ class Home extends Component {
 
   setItem = (product) => {
     if (product) {
-      this.removeProductFromState(product);
-      const productsInState = this.getCartInState();
+      const productsInState = this.removeProductFromArray(product);
       if (product.quantity > 0) {
         this.saveCartInState([...productsInState || {}, product]);
+      } else {
+        this.removeProductFromState(product);
       }
     }
   };
