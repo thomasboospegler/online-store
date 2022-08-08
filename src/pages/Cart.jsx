@@ -4,27 +4,21 @@ import { getProductsInCart, saveProductsInCart } from '../services/localStorageA
 
 export default class Cart extends Component {
   state = {
-    // products: [],
     cartList: [],
   };
 
-  componentDidUpdate = async () => {
+  componentDidUpdate = () => {
     const { cartList } = this.state;
-    if (JSON.stringify(cartList) !== await JSON.stringify(getProductsInCart())) {
+    if (JSON.stringify(cartList) !== JSON.stringify(getProductsInCart())) {
       saveProductsInCart(cartList);
     }
   }
 
-  teste = async () => {
-    const productList = await getProductsInCart();
+  componentDidMount = () => {
+    const productList = getProductsInCart();
     this.setState({
       cartList: productList,
-      // products: productList,
     });
-  }
-
-  componentDidMount = () => {
-    this.teste();
   }
 
   saveCartInState = (productsLlist) => this
@@ -36,17 +30,17 @@ export default class Cart extends Component {
     return result;
   };
 
-  removeProductFromState = async (product) => {
-    const productsInState = await this.getCartInState();
+  removeProductFromState = (product) => {
+    const productsInState = this.getCartInState();
     if (productsInState.length > 0) {
       this.saveCartInState(productsInState.filter((p) => p.id !== product.id));
     }
   };
 
-  setItem = async (product) => {
+  setItem = (product) => {
     if (product) {
-      await this.removeProductFromState(product);
-      const productsInState = await this.getCartInState();
+      this.removeProductFromState(product);
+      const productsInState = this.getCartInState();
       if (product.quantity > 0) {
         this.saveCartInState([...productsInState || {}, product]);
       }
@@ -55,19 +49,18 @@ export default class Cart extends Component {
 
   addProductQuantity = (product, quantity) => {
     product.quantity += quantity;
-    this.setItem(product/* , 1 */);
+    this.setItem(product);
   };
 
   subtractProductQuantity = (product, quantity) => {
     product.quantity -= quantity;
-    this.setItem(product/* , MINUS */);
+    this.setItem(product);
   };
 
-  handleCardBtn = async ({ target }, product) => {
+  handleCardBtn = ({ target }, product) => {
     const { name } = target;
     const { cartList } = this.state;
     if (name === 'addButton') {
-      // addProduct(product);
       this.addProductQuantity(product, 1);
     }
     if ((name === 'minusButton') && (product.quantity > 1)) {
@@ -76,6 +69,7 @@ export default class Cart extends Component {
     if (name === 'removeButton') {
       this.subtractProductQuantity(product, product.quantity);
     }
+    console.log(cartList);
     saveProductsInCart(cartList);
   }
 
@@ -87,29 +81,24 @@ export default class Cart extends Component {
 
   render() {
     const { cartList } = this.state;
-    console.log('carList', cartList);
     return (
       cartList.length === 0
         ? <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>
         : (
           <div>
             {cartList.filter(({ quantity }) => quantity > 0)
-              .map((item) => {
-                const quantity = this.getQuantityInCart(item, this.state);
-                return (<Card
-                  key={ item.id }
-                  cart
-                  id={ item.id }
-                  title={ item.title }
-                  thumbnail={ item.thumbnail }
-                  price={ item.price }
-                  quantity={ quantity }
-                  onClick={ (e) => this.handleCardBtn(e, item) }
-                />);
-              })}
+              .map((item) => (<Card
+                key={ item.id }
+                cart
+                id={ item.id }
+                title={ item.title }
+                thumbnail={ item.thumbnail }
+                price={ item.price }
+                quantity={ this.getQuantityInCart(item) }
+                onClick={ this.handleCardBtn }
+              />))}
           </div>
         )
-
     );
   }
 }

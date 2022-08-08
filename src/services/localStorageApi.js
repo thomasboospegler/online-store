@@ -8,23 +8,23 @@ if (!JSON.parse(localStorage.getItem(SHOPPING_CART_KEY))) {
 export const saveProductsInCart = (productsInCart) => localStorage
   .setItem(SHOPPING_CART_KEY, JSON.stringify(productsInCart));
 
-export const getProductsInCart = async () => {
-  const result = await JSON
+export const getProductsInCart = () => {
+  const result = JSON
     .parse(localStorage.getItem(SHOPPING_CART_KEY));
   return result;
 };
 
-export const removeProductFromCart = async (product) => {
-  const productsInCart = await getProductsInCart();
+export const removeProductFromCart = (product) => {
+  const productsInCart = getProductsInCart();
   if (productsInCart.length > 0) {
     saveProductsInCart(productsInCart.filter((p) => p.id !== product.id));
   }
 };
 
-const setItem = async (product) => {
+const setItem = (product) => {
   if (product) {
-    await removeProductFromCart(product);
-    const productsInCart = await getProductsInCart();
+    removeProductFromCart(product);
+    const productsInCart = getProductsInCart();
     saveProductsInCart([...productsInCart || {}, product]);
   }
 };
@@ -39,8 +39,8 @@ export const subtractProduct = (product) => {
   setItem(product/* , MINUS */);
 };
 
-export const getProductQuantity = async (product) => {
-  let productInCart = await getProductsInCart();
+export const getProductQuantity = (product) => {
+  let productInCart = getProductsInCart();
   if (productInCart[0]) {
     productInCart = productInCart.find((p) => p.id !== product.id);
     return typeof (productInCart.quantity) !== 'number' ? 0 : productInCart.quantity;

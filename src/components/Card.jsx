@@ -50,13 +50,13 @@ class Card extends Component {
                     {/* <img src="minus.svg" alt="" /> */}
                     ➖
                   </button>
-                  <input
+                  <span
                     data-testid="shopping-cart-product-quantity"
                     className="card-quantity"
-                    type="text"
                     name="name"
-                    value={ quantity }
-                  />
+                  >
+                    { quantity }
+                  </span>
                   <button
                     data-testid="product-add-to-cart"
                     className="card-plus-btn"

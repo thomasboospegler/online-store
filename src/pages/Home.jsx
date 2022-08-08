@@ -23,14 +23,13 @@ class Home extends Component {
     const categorylist = await getCategories();
     this.setState({
       categoriesList: categorylist,
-      // cartList: await getProductsInCart(),
-      cartList: await getProductsInCart(),
+      cartList: getProductsInCart(),
     });
   }
 
-  componentDidUpdate = async () => {
+  componentDidUpdate = () => {
     const { cartList } = this.state;
-    if (JSON.stringify(cartList) !== await JSON.stringify(getProductsInCart())) {
+    if (JSON.stringify(cartList) !== JSON.stringify(getProductsInCart())) {
       saveProductsInCart(cartList);
     }
   }
@@ -50,17 +49,17 @@ class Home extends Component {
     return result;
   };
 
-  removeProductFromState = async (product) => {
-    const productsInState = await this.getCartInState();
+  removeProductFromState = (product) => {
+    const productsInState = this.getCartInState();
     if (productsInState.length > 0) {
-      await this.saveCartInState(productsInState.filter((p) => p.id !== product.id));
+      this.saveCartInState(productsInState.filter((p) => p.id !== product.id));
     }
   };
 
-  setItem = async (product) => {
+  setItem = (product) => {
     if (product) {
-      await this.removeProductFromState(product);
-      const productsInState = await this.getCartInState();
+      this.removeProductFromState(product);
+      const productsInState = this.getCartInState();
       if (product.quantity > 0) {
         this.saveCartInState([...productsInState || {}, product]);
       }
@@ -92,9 +91,10 @@ class Home extends Component {
     });
   }
 
-  handleCardBtn = async ({ target }, product) => {
+  handleCardBtn = ({ target }, product) => {
     const { name } = target;
     const { cartList } = this.state;
+    saveProductsInCart(cartList);
     if (name === 'addButton') {
       // addProduct(product);
       this.addProductQuantity(product, 1);
@@ -105,8 +105,6 @@ class Home extends Component {
     if (name === 'removeButton') {
       this.subtractProductQuantity(product, product.quantity);
     }
-
-    saveProductsInCart(cartList);
   }
 
   setProduto = (item, quantity) => {
@@ -184,8 +182,7 @@ class Home extends Component {
                     thumbnail={ item.thumbnail }
                     price={ item.price }
                     quantity={ quantity }
-                    onClick={ (e) => this.handleCardBtn(e, this
-                      .setProduto(item, quantity)) }
+                    onClick={ this.handleCardBtn }
                   />);
                 })}
               </div>
