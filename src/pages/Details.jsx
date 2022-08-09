@@ -47,20 +47,17 @@ class Details extends Component {
     this.setState({
       productDetails: result,
     });
-    console.log(result);
   }
 
   handleBtnChange = () => {
     let cartList = getProductsInCart();
     const { productDetails } = this.state;
-    // if (productDetails.quantity < productDetails.avaliableQuantity) {
     productDetails.quantity += 1;
     this.setState({
       quantity: productDetails.quantity,
     });
     cartList = cartList.filter((item) => item.id !== productDetails.id);
     saveProductsInCart([...cartList, productDetails]);
-    // }
   }
 
   handleChange = ({ target }) => {
@@ -112,7 +109,9 @@ class Details extends Component {
     const inputCounter = ['1', '2', '3', '4', '5'];
     const { productDetails, quantity, evaluation, email,
       commentsList, checked, validatedEmail } = this.state;
-    const value = getProductsInCart().reduce((acc, curr) => acc + curr.quantity, 0);
+    const getProductsCart = getProductsInCart();
+    const value = getProductsCart
+      ? getProductsCart.reduce((acc, curr) => acc + curr.quantity, 0) : 0;
     return (
       <section>
         <Link to="/cart">
