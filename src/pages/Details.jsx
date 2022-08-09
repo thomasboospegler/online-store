@@ -16,6 +16,7 @@ class Details extends Component {
     email: '',
     rating: '',
     commentsList: [],
+    validatedEmail: true,
   };
 
   componentDidMount() {
@@ -64,19 +65,33 @@ class Details extends Component {
     this.setState({ [name]: value });
   }
 
+  validatedEmail = () => {
+    const { email } = this.state;
+    const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+    if (!(regex.test(email))) {
+      this.setState({ validatedEmail: false });
+      return false;
+    }
+    return true;
+  }
+
   handleSubmitBtn = (event) => {
     event.preventDefault();
     const { email, evaluation, rating } = this.state;
     const result = { email, evaluation, rating };
     const { match: { params: { id } } } = this.props;
     const savedLocal = getComments(id);
-    if (savedLocal) saveComments(id, [...savedLocal || {}, result]);
-    else saveComments(id, [result]);
+    const teste = this.validatedEmail();
+    if (teste) {
+      if (savedLocal) saveComments(id, [...savedLocal || {}, result]);
+      else saveComments(id, [result]);
+    }
     this.setState({
       evaluation: '',
       email: '',
       rating: '',
       commentsList: getComments(id),
+      validatedEmail: teste,
     });
   }
 
@@ -86,7 +101,8 @@ class Details extends Component {
       evaluation,
       email,
       rating,
-      commentsList } = this.state;
+      commentsList,
+      validatedEmail } = this.state;
     console.log(rating);
     return (
       <section>
@@ -207,6 +223,7 @@ class Details extends Component {
             Enviar
           </button>
         </form>
+        {validatedEmail && <h1 data-testid="error-msg">Campos inválidos</h1>}
         <section>
           {commentsList && commentsList.map((comment, index) => (
             <div key={ index }>
