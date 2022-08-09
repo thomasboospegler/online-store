@@ -41,14 +41,14 @@ class Details extends Component {
   handleBtnChange = () => {
     let cartList = getProductsInCart();
     const { productDetails } = this.state;
-    if (productDetails.quantity < productDetails.avaliableQuantity) {
-      productDetails.quantity += 1;
-      this.setState({
-        quantity: productDetails.quantity,
-      });
-      cartList = cartList.filter((item) => item.id !== productDetails.id);
-      saveProductsInCart([...cartList, productDetails]);
-    }
+    // if (productDetails.quantity < productDetails.avaliableQuantity) {
+    productDetails.quantity += 1;
+    this.setState({
+      quantity: productDetails.quantity,
+    });
+    cartList = cartList.filter((item) => item.id !== productDetails.id);
+    saveProductsInCart([...cartList, productDetails]);
+    // }
   }
 
   render() {
