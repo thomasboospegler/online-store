@@ -91,7 +91,6 @@ export default class Cart extends Component {
 
   render() {
     const { cartList } = this.state;
-    console.log('cartList: ', cartList);
     return (
       cartList.length === 0
         ? <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>

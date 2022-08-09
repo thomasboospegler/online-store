@@ -21,7 +21,7 @@ class Home extends Component {
     const categorylist = await getCategories();
     this.setState({
       categoriesList: categorylist,
-      cartList: getProductsInCart(),
+      cartList: getProductsInCart() || [],
     });
   }
 
@@ -117,8 +117,8 @@ class Home extends Component {
 
   getQuantityInCart = (item) => {
     const { cartList } = this.state;
-    const result = cartList.filter(({ id }) => id === item.id);
-    return !result[0] ? 0 : result[0].quantity || 0;
+    const result = cartList.length > 0 ? cartList.filter(({ id }) => id === item.id) : [];
+    return !result[0] ? 0 : result[0].quantity;
   }
 
   render() {
