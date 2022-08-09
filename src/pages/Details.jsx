@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductId } from '../services/api';
-import { getProductsInCart,
-  saveProductsInCart,
-  saveComments,
-  getComments,
-} from '../services/localStorageApi';
+import { getProductsInCart, saveProductsInCart, saveComments,
+  getComments } from '../services/localStorageApi';
 
 class Details extends Component {
   state = {
@@ -17,6 +14,7 @@ class Details extends Component {
     rating: '',
     commentsList: [],
     validatedEmail: true,
+    checked: [false, false, false, false, false],
   };
 
   componentDidMount() {
@@ -61,7 +59,15 @@ class Details extends Component {
   }
 
   handleChange = ({ target }) => {
-    const { name, value } = target;
+    const { name, value, type } = target;
+    if (type === 'checkbox') {
+      const { checked } = this.state;
+      for (let index = 0; index < checked.length; index += 1) {
+        if (index < Number(value)) checked[index] = true;
+        else checked[index] = false;
+      }
+      return this.setState({ rating: value });
+    }
     this.setState({ [name]: value });
   }
 
@@ -92,18 +98,14 @@ class Details extends Component {
       rating: '',
       commentsList: getComments(id),
       validatedEmail: teste,
+      checked: [false, false, false, false, false],
     });
   }
 
   render() {
-    const { productDetails,
-      quantity,
-      evaluation,
-      email,
-      rating,
-      commentsList,
-      validatedEmail } = this.state;
-    console.log(rating);
+    const inputCounter = ['1', '2', '3', '4', '5'];
+    const { productDetails, quantity, evaluation, email,
+      commentsList, checked, validatedEmail } = this.state;
     return (
       <section>
         <Link to="/cart">
@@ -135,9 +137,7 @@ class Details extends Component {
           </button>
           { quantity > 0
           && (
-            <span
-              className="card-cart-amount"
-            >
+            <span className="card-cart-amount">
               { quantity }
             </span>)}
         </div>
@@ -150,61 +150,19 @@ class Details extends Component {
             data-testid="product-detail-email"
             required
           />
-          <label htmlFor="1-rating">
-            <input
-              name="rating"
-              value="1"
-              onClick={ this.handleChange }
-              type="radio"
-              data-testid="1-rating"
-              id="1-rating"
-            />
-            1
-          </label>
-          <label htmlFor="2-rating">
-            <input
-              name="rating"
-              value="2"
-              onClick={ this.handleChange }
-              type="radio"
-              data-testid="2-rating"
-              id="2-rating"
-            />
-            2
-          </label>
-          <label htmlFor="3-rating">
-            <input
-              name="rating"
-              value="3"
-              onClick={ this.handleChange }
-              type="radio"
-              data-testid="3-rating"
-              id="3-rating"
-            />
-            3
-          </label>
-          <label htmlFor="4-rating">
-            <input
-              name="rating"
-              value="4"
-              onClick={ this.handleChange }
-              type="radio"
-              data-testid="4-rating"
-              id="4-rating"
-            />
-            4
-          </label>
-          <label htmlFor="5-rating">
-            <input
-              name="rating"
-              value="5"
-              onClick={ this.handleChange }
-              type="radio"
-              data-testid="5-rating"
-              id="5-rating"
-            />
-            5
-          </label>
+          {inputCounter.map((num, i) => (
+            <label htmlFor={ `${num}-input` } key={ num }>
+              <input
+                type="checkbox"
+                id={ `${num}-input` }
+                data-testid={ `${num}-rating` }
+                name={ `checkbox${num}` }
+                value={ num }
+                checked={ checked[i] }
+                onChange={ this.handleChange }
+              />
+            </label>
+          ))}
           <textarea
             name="evaluation"
             id="product-detail-evaluation"
@@ -222,8 +180,8 @@ class Details extends Component {
           >
             Enviar
           </button>
+          {!validatedEmail && <div data-testid="error-msg">Campos inválidos</div>}
         </form>
-        {validatedEmail && <h1 data-testid="error-msg">Campos inválidos</h1>}
         <section>
           {commentsList && commentsList.map((comment, index) => (
             <div key={ index }>
