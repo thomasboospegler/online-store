@@ -89,14 +89,17 @@ class Details extends Component {
       const savedLocal = getComments(id);
       if (savedLocal) saveComments(id, [...savedLocal || {}, result]);
       else saveComments(id, [result]);
+      return this.setState({
+        evaluation: '',
+        email: '',
+        rating: '',
+        commentsList: getComments(id),
+        validatedEmail: isEmailValidated,
+        checked: [false, false, false, false, false],
+      });
     }
     this.setState({
-      evaluation: '',
-      email: '',
-      rating: '',
-      commentsList: getComments(id),
       validatedEmail: isEmailValidated,
-      checked: [false, false, false, false, false],
     });
   }
 
@@ -179,7 +182,6 @@ class Details extends Component {
             Enviar
           </button>
         </form>
-        {console.log('valid?', validatedEmail)}
         {!validatedEmail && <p data-testid="error-msg">Campos inválidos</p>}
         <section>
           {commentsList && commentsList.map((comment, index) => (
