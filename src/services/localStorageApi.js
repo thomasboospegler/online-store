@@ -49,13 +49,13 @@ export const getProductQuantity = (product) => {
 
 export const getComments = (id) => {
   const result = JSON
-    .parse(localStorage.getItem(`comments_${id}`));
+    .parse(localStorage.getItem(id));
   return result;
 };
 
 export const saveComments = (id, comment) => {
-  if (!JSON.parse(localStorage.getItem(`comments_${id}`))) {
-    localStorage.setItem(`comments_${id}`, JSON.stringify([]));
+  if (!JSON.parse(localStorage.getItem(id))) {
+    localStorage.setItem(id, JSON.stringify([]));
   }
-  localStorage.setItem(`comments_${id}`, JSON.stringify(comment));
+  localStorage.setItem(id, JSON.stringify(comment));
 };
