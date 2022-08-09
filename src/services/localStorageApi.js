@@ -57,6 +57,5 @@ export const saveComments = (id, comment) => {
   if (!JSON.parse(localStorage.getItem(`comments_${id}`))) {
     localStorage.setItem(`comments_${id}`, JSON.stringify([]));
   }
-  console.log('local');
   localStorage.setItem(`comments_${id}`, JSON.stringify(comment));
 };

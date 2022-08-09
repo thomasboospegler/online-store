@@ -71,14 +71,12 @@ class Details extends Component {
     this.setState({ [name]: value });
   }
 
-  validatedEmail = () => {
-    const { email } = this.state;
+  validatedInputs = () => {
+    const { email, rating } = this.state;
     const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
-    if (!(regex.test(email))) {
-      this.setState({ validatedEmail: false });
-      return false;
-    }
-    return true;
+    const validEmail = regex.test(email);
+    const validGrade = rating !== '';
+    return validEmail && validGrade;
   }
 
   handleSubmitBtn = (event) => {
@@ -86,9 +84,9 @@ class Details extends Component {
     const { email, evaluation, rating } = this.state;
     const result = { email, evaluation, rating };
     const { match: { params: { id } } } = this.props;
-    const savedLocal = getComments(id);
-    const teste = this.validatedEmail();
-    if (teste) {
+    const isEmailValidated = this.validatedInputs();
+    if (isEmailValidated) {
+      const savedLocal = getComments(id);
       if (savedLocal) saveComments(id, [...savedLocal || {}, result]);
       else saveComments(id, [result]);
     }
@@ -97,7 +95,7 @@ class Details extends Component {
       email: '',
       rating: '',
       commentsList: getComments(id),
-      validatedEmail: teste,
+      validatedEmail: isEmailValidated,
       checked: [false, false, false, false, false],
     });
   }
