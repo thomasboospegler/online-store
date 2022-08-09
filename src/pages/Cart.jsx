@@ -56,9 +56,11 @@ export default class Cart extends Component {
     }
   };
 
-  addProductQuantity = (product, quantity) => {
-    product.quantity += quantity;
-    this.setItem(product);
+  addProductQuantity = (product, quantity, avaliable) => {
+    if (product.quantity < avaliable) {
+      product.quantity += quantity;
+      this.setItem(product/* , 1 */);
+    }
   };
 
   subtractProductQuantity = (product, quantity) => {
@@ -66,11 +68,11 @@ export default class Cart extends Component {
     this.setItem(product);
   };
 
-  handleCardBtn = ({ target }, product) => {
+  handleCardBtn = ({ target }, product, avaliable) => {
     const { name } = target;
     const { cartList } = this.state;
     if (name === 'addButton') {
-      this.addProductQuantity(product, 1);
+      this.addProductQuantity(product, 1, avaliable);
     }
     if ((name === 'minusButton') && (product.quantity > 1)) {
       this.subtractProductQuantity(product, 1);
@@ -89,6 +91,7 @@ export default class Cart extends Component {
 
   render() {
     const { cartList } = this.state;
+    console.log('cartList: ', cartList);
     return (
       cartList.length === 0
         ? <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>
@@ -102,7 +105,8 @@ export default class Cart extends Component {
                 title={ item.title }
                 thumbnail={ item.thumbnail }
                 price={ item.price }
-                quantity={ this.getQuantityInCart(item) }
+                quantity={ item.quantity }/* { this.getQuantityInCart(item) } */
+                avaliableQuantity={ item.avaliableQuantity }
                 onClick={ this.handleCardBtn }
               />))}
           </div>

@@ -29,3 +29,19 @@
   border-top: 1px solid rgb(208, 199, 199);
   font-size: 12px;
 }
+
+.button-cart {
+  max-height: 30px;
+  max-width: 30px;
+}
+
+.home-cart-button {
+  background-color: white;
+  border: none;
+}
+
+.cart-button {
+  color: red;
+  font-size: 1.2em;
+  position: absolute;
+}

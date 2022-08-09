@@ -33,29 +33,34 @@ class Details extends Component {
 
   fetchId = async (productId) => {
     const response = await getProductId(productId);
-    const { id, price, thumbnail, title } = response;
+    const { id, price, thumbnail, title, shipping } = response;
     const cartList = getProductsInCart();
     const product = cartList ? cartList.filter((item) => item.id === productId) : [];
+    const shippings = shipping.free_shipping;
     const result = { id,
       price,
       quantity: product.length > 0 ? product[0].quantity : 0,
       thumbnail,
+      shippings,
       title,
-      available_quantity: response.available_quantity };
+      avaliableQuantity: response.available_quantity };
     this.setState({
       productDetails: result,
     });
+    console.log(result);
   }
 
   handleBtnChange = () => {
     let cartList = getProductsInCart();
     const { productDetails } = this.state;
+    // if (productDetails.quantity < productDetails.avaliableQuantity) {
     productDetails.quantity += 1;
     this.setState({
       quantity: productDetails.quantity,
     });
     cartList = cartList.filter((item) => item.id !== productDetails.id);
     saveProductsInCart([...cartList, productDetails]);
+    // }
   }
 
   handleChange = ({ target }) => {
@@ -107,13 +112,19 @@ class Details extends Component {
     const inputCounter = ['1', '2', '3', '4', '5'];
     const { productDetails, quantity, evaluation, email,
       commentsList, checked, validatedEmail } = this.state;
+    const value = getProductsInCart().reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <section>
         <Link to="/cart">
           <button data-testid="shopping-cart-button" type="button">
-            Carrinho
+            <img
+              className="button-cart"
+              src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png"
+              alt="carrinho de compras"
+            />
           </button>
         </Link>
+        {value === 0 ? null : <span data-testid="shopping-cart-size">{value}</span>}
         <h3 data-testid="product-detail-name">{productDetails.title}</h3>
         <p data-testid="product-detail-price">{`R$ ${productDetails.price}`}</p>
         <img
@@ -121,10 +132,11 @@ class Details extends Component {
           src={ productDetails.thumbnail }
           alt={ productDetails.price }
         />
+        {productDetails.shippings ? <p data-testid="free-shipping">Frete Gratis</p> : ''}
         <h4>Especificações Técnicas</h4>
         <ul>
           <li>{productDetails.warranty}</li>
-          <li>{`Quantidade: ${productDetails.available_quantity}`}</li>
+          <li>{`Quantidade: ${productDetails.avaliableQuantity}`}</li>
           <li>Outras Especificações...</li>
         </ul>
         <div className="card-quantity">
