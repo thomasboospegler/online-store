@@ -148,10 +148,7 @@ class Details extends Component {
             Adicionar ao carrinho
           </button>
           { quantity > 0
-          && (
-            <span className="card-cart-amount">
-              { quantity }
-            </span>)}
+          && (<span className="card-cart-amount">{ quantity }</span>)}
         </div>
         <form className="comments-container">
           <input
