@@ -179,7 +179,8 @@ class Details extends Component {
             Enviar
           </button>
         </form>
-        {!validatedEmail && <div data-testid="error-msg">Campos inválidos</div>}
+        {console.log('valid?', validatedEmail)}
+        {!validatedEmail && <p data-testid="error-msg">Campos inválidos</p>}
         <section>
           {commentsList && commentsList.map((comment, index) => (
             <div key={ index }>
