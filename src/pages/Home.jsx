@@ -14,6 +14,7 @@ class Home extends Component {
       click: false,
       categoriesList: [],
       cartList: [],
+      toSortBy: '',
     };
   }
 
@@ -33,8 +34,9 @@ class Home extends Component {
   }
 
   handleChange = ({ target }) => {
+    const { name, value } = target;
     this.setState({
-      query: target.value,
+      [name]: value,
     });
   }
 
@@ -121,8 +123,18 @@ class Home extends Component {
     return !result[0] ? 0 : result[0].quantity;
   }
 
+  toSort = (products) => {
+    const { toSortBy } = this.state;
+    if (toSortBy.length > 0) {
+      return toSortBy === 'maior'
+        ? products.sort((a, b) => b.price - a.price)
+        : products.sort((a, b) => a.price - b.price);
+    }
+    return products;
+  }
+
   render() {
-    const { products, click, categoriesList, cartList } = this.state;
+    const { products, click, categoriesList, cartList, toSortBy } = this.state;
     const value = cartList.reduce((acc, curr) => acc + curr.quantity, 0);
     return (
       <div>
@@ -133,6 +145,7 @@ class Home extends Component {
             Digite algum termo de pesquisa ou escolha uma categoria.
           </span>
           <input
+            name="query"
             onChange={ this.handleChange }
             type="text"
             data-testid="query-input"
@@ -144,6 +157,16 @@ class Home extends Component {
           >
             Pesquisar
           </button>
+          <select
+            name="toSortBy"
+            id="toSortBy"
+            value={ toSortBy }
+            onChange={ this.handleChange }
+          >
+            <option value="">Sem ordenação</option>
+            <option value="maior">Maior preço</option>
+            <option value="menor">Menor preço</option>
+          </select>
           <Link to="/cart">
             <button
               className="home-cart-button"
@@ -185,7 +208,7 @@ class Home extends Component {
           {products.length < 2 && click ? <span>Nenhum produto foi encontrado</span>
             : (
               <div className="home-products">
-                {products.map((item) => {
+                {this.toSort(products).map((item) => {
                   const quantity = this.getQuantityInCart(item, this.state);
                   return (<Card
                     key={ item.id }
