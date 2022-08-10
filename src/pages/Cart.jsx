@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import { getProductsInCart, saveProductsInCart } from '../services/localStorageApi';
 
@@ -109,6 +110,19 @@ export default class Cart extends Component {
                 avaliableQuantity={ item.avaliableQuantity }
                 onClick={ this.handleCardBtn }
               />))}
+            <cartList
+              cart
+              product={ cartList }
+              removeFromCart={ this.removeFromCart }
+              addOne={ this.handleAddToCart }
+              removeOne={ this.handleSubtractFromCart }
+            />
+            <Link
+              to="/checkout"
+              data-testid="checkout-products"
+            >
+              Finalizar compra
+            </Link>
           </div>
         )
     );

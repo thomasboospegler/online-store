@@ -8,6 +8,8 @@ if (!JSON.parse(localStorage.getItem(SHOPPING_CART_KEY))) {
 export const saveProductsInCart = (productsInCart) => localStorage
   .setItem(SHOPPING_CART_KEY, JSON.stringify(productsInCart));
 
+export const clearProductsInCart = () => saveProductsInCart([]);
+
 export const getProductsInCart = () => {
   const result = JSON
     .parse(localStorage.getItem(SHOPPING_CART_KEY));
